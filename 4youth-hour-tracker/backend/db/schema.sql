@@ -32,8 +32,6 @@ CREATE TABLE schedules (
     institution_id INTEGER NOT NULL REFERENCES institutions(id),
     pay_rate_id INTEGER NOT NULL REFERENCES pay_rates(id),
     date DATE NOT NULL,
-    start_time TIME NOT NULL,
-    end_time TIME NOT NULL,
     season TEXT NOT NULL CHECK (season IN ('summer', 'school_year')),
     attendance TEXT NOT NULL CHECK (attendance IN ('active', 'absent', 'modified'))
 );
@@ -47,5 +45,5 @@ CREATE TABLE worklogs (
     date DATE NOT NULL,
     status TEXT NOT NULL CHECK (status IN ('pending', 'approved', 'denied')),
     extra_hours NUMERIC(4, 1),
-    reasoning: TEXT -- Optional field for employees to provide reasoning for extra hours or absences
+    reasoning TEXT -- Optional field for employees to provide reasoning for extra hours or absences
 );
