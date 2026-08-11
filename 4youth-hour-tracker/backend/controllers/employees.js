@@ -241,15 +241,12 @@ export const getMyPayPeriodSummary = async (req, res) => {
     if (!pay_period_id) {
         return res.status(400).json({ message: 'pay_period_id query parameter is required' });
     }
-    let query = supabase
+    const query = await supabase
         .from('worklogs')
         .select('*, institutions(name), pay_periods(start_date, end_date)')
         .eq('user_id', req.user.id)
         .order('date', { ascending: false });
 
-    if (pay_period_id) {
-        query = query.eq('pay_period_id', pay_period_id);
-    }
 
     const { data, error } = await query;
 
@@ -257,7 +254,7 @@ export const getMyPayPeriodSummary = async (req, res) => {
         return res.status(500).json({ message: 'Error fetching worklogs' });
     }
 
-    // calculating on approved extra hours. 
+    // calculating only approved extra hours. 
     const approvedWorklogs = data.filter(w => w.status === 'approved')
     const totalHours = approvedWorklogs.reduce((sum, w) => sum + (w.extra_hours || 0), 0)
 
