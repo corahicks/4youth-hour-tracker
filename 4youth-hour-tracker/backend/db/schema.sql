@@ -18,7 +18,8 @@ CREATE TABLE pay_rates (
     institution_id INTEGER NOT NULL REFERENCES institutions(id),
     season TEXT NOT NULL CHECK (season IN ('summer', 'school_year')),
     instructional_hours NUMERIC(4, 1) NOT NULL,
-    paid_hours NUMERIC(4, 1) NOT NULL
+    paid_hours NUMERIC(4, 1) NOT NULL,
+    program_type TEXT NOT NULL CHECK (program_type IN ('we_rise', 'after_care', 'studio'))
 );
 
 CREATE TABLE pay_periods (
@@ -44,6 +45,8 @@ CREATE TABLE worklogs (
     pay_period_id INTEGER NOT NULL REFERENCES pay_periods(id),
     institution_id INTEGER NOT NULL REFERENCES institutions(id),
     date DATE NOT NULL,
+    start_time TIME,
+    end_time TIME,
     status TEXT NOT NULL CHECK (status IN ('pending', 'approved', 'denied')),
     extra_hours NUMERIC(4, 1),
     reasoning TEXT -- Optional field for employees to provide reasoning for extra hours or absences
