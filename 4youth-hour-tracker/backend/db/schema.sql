@@ -8,7 +8,9 @@ CREATE TABLE users (
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
-    role TEXT NOT NULL CHECK (role IN ('employee', 'admin'))
+    role TEXT NOT NULL CHECK (role IN ('employee', 'admin')),
+    hourly_rate DECIMAL(10, 2) NOT NULL
+
 );
 
 CREATE TABLE pay_rates (
@@ -16,8 +18,7 @@ CREATE TABLE pay_rates (
     institution_id INTEGER NOT NULL REFERENCES institutions(id),
     season TEXT NOT NULL CHECK (season IN ('summer', 'school_year')),
     instructional_hours NUMERIC(4, 1) NOT NULL,
-    paid_hours NUMERIC(4, 1) NOT NULL,
-    hourly_rate DECIMAL(10, 2) NOT NULL
+    paid_hours NUMERIC(4, 1) NOT NULL
 );
 
 CREATE TABLE pay_periods (
