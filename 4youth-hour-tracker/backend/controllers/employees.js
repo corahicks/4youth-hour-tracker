@@ -57,8 +57,11 @@ export const getFullSchedule = async (req, res) => {
  * @returns {200} worklog - the created worklog (if attended)
  * @returns {200} updatedSchedule - the updated schedule (if absent)
  * @returns {400} error - attendance already confirmed for this shift
+ * @returns {400} error - studio shift, use submitExtraHours instead
  * @returns {404} error - schedule not found or not owned by user
  * @returns {500} error - database operation failed
+ * 
+
  */
 
 export const confirmAttendance = async (req, res) => {
@@ -72,6 +75,12 @@ export const confirmAttendance = async (req, res) => {
     if (scheduleError || !schedule || schedule.user_id !== req.user.id) { //checking for connection failure, schedule not found, or schedule not owned by user.
         return res.status(404).json({ message: 'Schedule not found or not owned by user' });
     }
+
+    if (!schedule.pay_rate_id) { // if pay_rate_id is null, this is a studio shift and should not be logged as a worklog. Studio shifts do not have fixed hours, so employees should use the submit extra hours endpoint to log their time.
+        return res.status(400).json({ 
+            message: 'Studio shifts do not have fixed hours. Please use submit extra hours to log your time.' 
+        });
+}
     const { data: existingWorklog, error: worklogError } = await supabase // check if a worklog already exists for this schedule_id
         .from('worklogs')
         .select('*')
@@ -241,10 +250,11 @@ export const getMyPayPeriodSummary = async (req, res) => {
     if (!pay_period_id) {
         return res.status(400).json({ message: 'pay_period_id query parameter is required' });
     }
-    const query = await supabase
+    const query =  supabase
         .from('worklogs')
         .select('*, institutions(name), pay_periods(start_date, end_date)')
-        .eq('user_id', req.user.id)
+        .eq('pay_period_id', pay_period_id) //limits to the requested pay period
+        .eq('user_id', req.user.id) // limits to the logged-in user
         .order('date', { ascending: false });
 
 

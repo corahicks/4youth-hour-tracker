@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken'
 
-
 export const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -15,5 +14,11 @@ export const verifyToken = (req, res, next) => {
         req.user = decoded; //correctly stores the payyload (id and role)
         next();
     });
+}
 
+export const requireAdmin = (req, res, next) => {
+    if (req.user?.role !== 'admin') {
+        return res.status(403).json({ message: 'Access denied: admins only' });
+    }
+    next();
 }
