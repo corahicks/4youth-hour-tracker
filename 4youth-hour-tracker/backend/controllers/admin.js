@@ -1,5 +1,12 @@
 import supabase from '../db/supabase.js'
 import bcrypt from 'bcryptjs'
+import PDFDocument from 'pdfkit'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+const logoPath = join(__dirname, '../assets/fouryouthlogo.png')
 
 // ── User Management ──────────────────────────────────────────────
 
@@ -291,12 +298,89 @@ export const updateWorklogStatus = async (req, res) => {
 // ── Pay Period Export ────────────────────────────────────────────
 
 /**
- * Exports a pay period summary as a PDF.
- * Placeholder — PDF generation not yet implemented.
+ * Exports an approved worklog summary for a pay period as a downloadable PDF.
+ * Groups worklogs by employee. Only includes approved worklogs.
  *
  * @param {number} req.params.id - ID of the pay period to export
- * @returns {501} message - not yet implemented
+ * @returns {200} PDF file download
+ * @returns {404} error - pay period not found
+ * @returns {500} error - database operation failed
  */
 export const exportPayPeriodPDF = async (req, res) => {
-    return res.status(501).json({ message: 'PDF export not yet implemented' })
+    const payPeriodId = req.params.id;
+
+    const { data: payPeriod, error: payPeriodError } = await supabase
+        .from('pay_periods')
+        .select('*')
+        .eq('id', payPeriodId)
+        .single();
+
+    if (payPeriodError?.code === 'PGRST116') {
+        return res.status(404).json({ message: 'Pay period not found' });
+    }
+    if (payPeriodError) {
+        return res.status(500).json({ message: 'Database operation failed' });
+    }
+
+    const { data: worklogs, error: worklogsError } = await supabase
+        .from('worklogs')
+        .select('*, users(name), institutions(name), schedules(pay_rates(paid_hours))')
+        .eq('pay_period_id', payPeriodId)
+        .eq('status', 'approved')
+        .order('user_id')
+        .order('date');
+
+    if (worklogsError) {
+        return res.status(500).json({ message: 'Database operation failed' });
+    }
+
+    // formats "2026-08-11" → "August 11, 2026"
+    const formatDate = (dateStr) => {
+        const [year, month, day] = dateStr.split('-');
+        return new Date(year, month - 1, day).toLocaleDateString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric'
+        });
+    };
+
+    // group worklogs by employee name
+    const byEmployee = worklogs.reduce((acc, wl) => {
+        const name = wl.users.name;
+        if (!acc[name]) acc[name] = [];
+        acc[name].push(wl);
+        return acc;
+    }, {});
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="pay-period-${payPeriodId}-report.pdf"`);
+
+    const doc = new PDFDocument({ margin: 50 });
+    doc.pipe(res);
+
+    // header
+    doc.image(logoPath, 50, 45, { width: 60 });
+    doc.fontSize(20).font('Helvetica-Bold').text('Staff Hours Summary', 120, 55);
+    doc.fontSize(11).font('Helvetica').text(`Pay Period: ${formatDate(payPeriod.start_date)} – ${formatDate(payPeriod.end_date)}`, 120, 82);
+    doc.moveDown(3);
+
+    // per employee section
+    for (const [employeeName, logs] of Object.entries(byEmployee)) {
+        doc.fontSize(13).font('Helvetica-Bold').text(employeeName);
+        doc.moveDown(0.3);
+
+        for (const wl of logs) {
+            const institution = wl.institutions?.name ?? '—';
+            const hours = wl.extra_hours ?? wl.schedules?.pay_rates?.paid_hours ?? '—';
+            doc.fontSize(10).font('Helvetica').text(`  ${formatDate(wl.date)}    ${institution}    ${hours} hrs`);
+        }
+
+        const total = logs.reduce((sum, wl) => {
+            return sum + (wl.extra_hours ?? wl.schedules?.pay_rates?.paid_hours ?? 0);
+        }, 0);
+
+        doc.moveDown(0.3);
+        doc.fontSize(10).font('Helvetica-Bold').text(`  Total: ${total} hrs`);
+        doc.moveDown(1.5);
+    }
+
+    doc.end();
 }
