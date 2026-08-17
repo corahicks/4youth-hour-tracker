@@ -140,32 +140,40 @@ export const confirmAttendance = async (req, res) => {
 
 /**
  * Submits extra hours outside of the assigned schedule for admin approval.
+ * Calculates extra_hours from start_time and end_time on the backend.
  * Creates a worklog with status pending until an admin approves or denies it.
  *
  * @param {Object} req - Express request object
  * @param {number} req.body.schedule_id - ID of the related schedule
- * @param {number} req.body.extra_hours - Number of extra hours worked (must be greater than 0)
+ * @param {string} req.body.start_time - Start time in HH:MM format
+ * @param {string} req.body.end_time - End time in HH:MM format
  * @param {string} req.body.reasoning - Explanation for the extra hours
  * @param {number} req.body.institution_id - ID of the institution where extra hours were worked
  * @param {string} req.body.date - Date the extra hours occurred
  * @param {Object} req.user - Authenticated user from JWT (requires req.user.id)
  * @param {Object} res - Express response object
  * @returns {201} worklog - the created pending worklog
- * @returns {400} error - extra_hours must be greater than 0
+ * @returns {400} error - end_time must be after start_time
  * @returns {404} error - schedule not found or not owned by user
  * @returns {500} error - database operation failed
  */
 export const submitExtraHours = async (req, res) => {
-    const { schedule_id, extra_hours, reasoning, institution_id, date } = req.body;
-    if (!extra_hours || extra_hours <= 0) {
-        return res.status(400).json({ message: 'Extra hours must be greater than 0' });
+    const { schedule_id, start_time, end_time, reasoning, institution_id, date } = req.body;
+
+    const [startH, startM] = start_time.split(':').map(Number);
+    const [endH, endM] = end_time.split(':').map(Number);
+    const extra_hours = Math.round(((endH * 60 + endM) - (startH * 60 + startM)) / 60 * 10) / 10;
+
+    if (extra_hours <= 0) {
+        return res.status(400).json({ message: 'end_time must be after start_time' });
     }
+
     const { data: schedule, error: scheduleError } = await supabase
         .from('schedules')
         .select('*')
         .eq('id', schedule_id)
         .single();
-        
+
     if (scheduleError || !schedule || schedule.user_id !== req.user.id) {
         return res.status(404).json({ message: 'Schedule not found or not owned by user' });
     }
@@ -179,13 +187,15 @@ export const submitExtraHours = async (req, res) => {
         return res.status(500).json({ message: 'Error fetching pay period' });
     }
 
-    const { data: worklog, error: worklogInsertError } = await supabase // employees can only logged in "pending" status.
+    const { data: worklog, error: worklogInsertError } = await supabase
         .from('worklogs')
         .insert({
             user_id: req.user.id,
             schedule_id: schedule_id,
             institution_id: institution_id,
             date: date,
+            start_time: start_time,
+            end_time: end_time,
             pay_period_id: payPeriod.id,
             extra_hours: extra_hours,
             reasoning: reasoning,
