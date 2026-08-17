@@ -32,10 +32,10 @@ CREATE TABLE schedules (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id),
     institution_id INTEGER NOT NULL REFERENCES institutions(id),
-    pay_rate_id INTEGER NOT NULL REFERENCES pay_rates(id),
+    pay_rate_id INTEGER REFERENCES pay_rates(id),
     date DATE NOT NULL,
     season TEXT NOT NULL CHECK (season IN ('summer', 'school_year')),
-    attendance TEXT NOT NULL CHECK (attendance IN ('active', 'absent', 'modified'))
+    attendance TEXT NOT NULL CHECK (attendance IN ('active', 'absent'))
 );
 
 CREATE TABLE worklogs (
