@@ -1,0 +1,43 @@
+@import './styles/tokens.css';
+
+*,
+*::before, 
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background: linear-gradient(135deg, var(--color-bg-gradient-start), var(--color-bg-gradient-end));
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased; /* For better font rendering on macOS */
+  -moz-osx-font-smoothing: grayscale; 
+}
+
+#root { /* Ensure the root element always fills the screen even if there's not much content */
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+p, span, label { /* Add other text elements as needed */
+  color: var(--color-text);
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+input, select, textarea {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+}

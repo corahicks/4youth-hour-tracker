@@ -1,0 +1,116 @@
+.employee-dash {
+  padding: var(--space-lg);
+  min-height: 100vh;
+}
+
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+
+.dash-header .logo-image {
+  width: 60px;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: var(--font-size-xl);
+  cursor: pointer;
+  color: var(--color-primary);
+}
+
+.employee-dash h1 {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+.shift-section,
+.pay-summary {
+  margin-bottom: var(--space-md);
+}
+
+.shift-section h2 {
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.employee-dash .card {
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-lg);
+  margin: 0 auto var(--space-md);
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.employee-dash .card p {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  margin-bottom: var(--space-sm);
+  text-align: center;
+}
+
+.confirm-label {
+  font-size: var(--font-size-md);
+  color: var(--color-primary);
+  margin: var(--space-md) 0 var(--space-sm);
+  text-align: center;
+}
+
+.attendance-buttons {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.btn-present {
+  flex: 1;
+  background-color: var(--color-success);
+  color: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  box-shadow: var(--shadow-button);
+}
+
+.btn-absent {
+  flex: 1;
+  background-color: var(--color-danger);
+  color: white;
+  border: none;
+  border-radius: var(--radius-full);
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  box-shadow: var(--shadow-button);
+}
+
+.btn-worklog {
+  width: 100%;
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  margin-top: var(--space-md);
+  box-shadow: var(--shadow-button);
+}
