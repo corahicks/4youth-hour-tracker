@@ -1,22 +1,9 @@
 import { useState, useEffect } from "react"
 import '../styles/EmployeeDashboard.css'
-import logo from '../assets/logo.png';
+import Navbar from '../components/Navbar'
+import { formatDate, formatTime } from "../utils/formatters";
 
-const formatDate = (dateStr) => {
-    const [year, month, day] = dateStr.split('-').map(Number);
-    const date = new Date(year, month - 1, day);
-    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    const ordinal = (n) => { const s = ['th','st','nd','rd']; const v = n % 100; return n + (s[(v-20)%10] || s[v] || s[0]); };
-    return `${dayNames[date.getDay()]}, ${monthNames[date.getMonth()]} ${ordinal(day)}, ${year}`;
-};
 
-const formatTime = (timeStr) => {
-    const [hour, minute] = timeStr.split(':').map(Number);
-    const ampm = hour >= 12 ? 'pm' : 'am';
-    const h = hour % 12 || 12;
-    return `${h}:${String(minute).padStart(2, '0')}${ampm}`;
-};
 
 function EmployeeDashboard () {
     const name = localStorage.getItem('name');
@@ -61,11 +48,7 @@ function EmployeeDashboard () {
     return (
         <div className="employee-dash">
 
-            <header className="dash-header">
-                <img src={logo} alt="4Youth logo" className="logo-image" />
-                <button className="menu-btn">☰</button>
-            </header>
-
+            <Navbar />
             <h1>Welcome Back, {name}!</h1>
 
             <section className="shift-section">
@@ -73,9 +56,9 @@ function EmployeeDashboard () {
                 <div className="card">
                     {todayShift ? (
                         attendanceSubmitted === 'present'
-                            ? <p>Attendance confirmed. Have a great shift!</p>
+                            ? <p><strong>Attendance confirmed. Have a great shift!</strong></p>
                             : attendanceSubmitted === 'absent'
-                                ? <p>Absence recorded. See you next time!</p>
+                                ? <p><strong>Absence recorded. See you next time!</strong></p>
                                 : (
                                     <>
                                         <p><strong>Date:</strong> {formatDate(todayShift.date)}</p>

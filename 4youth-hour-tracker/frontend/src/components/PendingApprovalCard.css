@@ -1,0 +1,57 @@
+.approval-card {
+    background-color: var(--color-card-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-md);
+    max-width: 500px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card-date {
+    text-align: center;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-md);
+    margin-bottom: var(--space-md);
+    color: var(--color-primary);
+}
+
+.approval-card p {
+    font-size: var(--font-size-base);
+    margin-bottom: var(--space-sm);
+    color: var(--color-text);
+}
+
+.card-buttons {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+}
+
+.btn-approve {
+    flex: 1;
+    background-color: var(--color-success);
+    color: white;
+    border: none;
+    border-radius: var(--radius-full);
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+}
+
+.btn-decline {
+    flex: 1;
+    background-color: var(--color-danger);
+    color: white;
+    border: none;
+    border-radius: var(--radius-full);
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+}

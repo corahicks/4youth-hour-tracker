@@ -1,0 +1,58 @@
+.admin-dash {
+  padding: var(--space-lg);
+  min-height: 100vh;
+}
+
+.admin-dash h1 {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+.approval-section h2 {
+ font-size: var(--font-size-lg);
+  color: var(--color-primary);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.approval-section {
+  margin-bottom: var(--space-md) ;
+}
+
+.no-approvals-card {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+.btn-summary {
+  width: 100%;
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  margin-top: var(--space-md);
+  box-shadow: var(--shadow-button);
+}
+
+.btn-export {
+  width: 100%;
+  background-color: var(--color-action);
+  color: white;
+  border: none;
+  border-radius: var(--radius-full);
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  margin-top: var(--space-md);
+  box-shadow: var(--shadow-button);
+}
