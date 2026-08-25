@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../styles/login.css';
 import logo from '../assets/logo.png';
@@ -7,8 +7,14 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // Hook to navigate programmatically
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // Hook to navigate programmatically
+  
+  useEffect(() => {
+    const role = localStorage.getItem('role')
+    if (role === 'admin') navigate('/admin-dashboard')
+    if (role === 'employee') navigate('/dashboard')
+  }, []) // empty [] checks for existing role and redirects before the user sees the login form
 
   const handleSubmit =  async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
@@ -37,6 +43,7 @@ function Login() {
     localStorage.setItem('role', data.role); 
     localStorage.setItem('name', data.name);
     navigate(data.role === 'admin' ? '/admin-dashboard' : '/dashboard'); // Navigate based on role
+
   }
 
 
