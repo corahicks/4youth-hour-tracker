@@ -281,3 +281,16 @@ export const getMyPayPeriodSummary = async (req, res) => {
 
     return res.status(200).json({ worklogs: data, totalHours });
 }
+
+export const getCurrentPayPeriod = async (req, res) => {
+    const today = new Date().toISOString().split('T')[0]
+    const { data, error } = await supabase
+        .from('pay_periods')
+        .select('*')
+        .lte('start_date', today)
+        .gte('end_date', today)
+        .single()
+
+    if (error) return res.status(404).json({message: 'No active pay period found' })
+    return res.status(200).json({ payPeriod: data })
+}

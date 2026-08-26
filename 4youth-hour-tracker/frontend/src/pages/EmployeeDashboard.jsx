@@ -24,13 +24,21 @@ function EmployeeDashboard () {
         .then(data => setSchedule(data.schedules)) //pulls the specific part of the schedule
     }, []);
 
+
     useEffect(() => {
-        fetch('http://localhost:3000/api/employees/pay-period-summary', {
-            headers: { 'Authorization': `Bearer ${token}` }
+        fetch('http://localhost:3000/api/employees/current-pay-period', {
+            headers: { 'Authorization': `Bearer ${token}`}
+        })
+        .then(res => res.json())
+        .then(data => {
+            const id = data.payPeriod.id
+            return fetch(`http://localhost:3000/api/employees/pay-period-summary?pay_period_id=${id}`, {
+                headers: {'Authorization': `Bearer ${token}`}
+            })
         })
         .then(res => res.json())
         .then(data => setTotalHours(data.totalHours || 0))
-    }, []);
+    }, [])
 
     const handleAttendance = (attended) => {
         fetch('http://localhost:3000/api/employees/confirm-attendance', {
