@@ -10,7 +10,7 @@ function AdminDashboard () {
     const [worklogs, setWorklogs] = useState([])
 
     useEffect (() => {
-        fetch('http://localhost:3000/api/admin/worklogs', {
+        fetch(`${import.meta.env.VITE_API_URL}/api/admin/worklogs`, {
             headers: {'Authorization': `Bearer ${token}`}
         }) 
         .then(res => res.json())
@@ -18,7 +18,7 @@ function AdminDashboard () {
     }, [])
 
     const handleApprove = (id) => {
-        fetch(`http://localhost:3000/api/admin/worklogs/${id}`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/admin/worklogs/${id}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -30,7 +30,7 @@ function AdminDashboard () {
     }
 
      const handleDecline = (id) => {
-        fetch(`http://localhost:3000/api/admin/worklogs/${id}`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/admin/worklogs/${id}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${token}`,

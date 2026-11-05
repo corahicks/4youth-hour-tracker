@@ -294,3 +294,13 @@ export const getCurrentPayPeriod = async (req, res) => {
     if (error) return res.status(404).json({message: 'No active pay period found' })
     return res.status(200).json({ payPeriod: data })
 }
+
+export const getAllPayPeriods = async (req, res) => {
+    const { data, error } = await supabase
+        .from('pay_periods')
+        .select('*')
+        .order('start_date', {ascending: false })
+
+    if (error) return res.status(500).json({ message: 'Error fetching pay periods' })
+    return res.status(200).json({ payPeriods: data })
+}

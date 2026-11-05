@@ -7,7 +7,8 @@ import {
     submitExtraHours,
     getMyWorklogs,
     getMyPayPeriodSummary,
-    getCurrentPayPeriod
+    getCurrentPayPeriod,
+    getAllPayPeriods
 } from '../controllers/employees.js'
 
 const router = express.Router()
@@ -28,5 +29,6 @@ router.get('/pay-period-summary', verifyToken, getMyPayPeriodSummary)
 
 // -- Pay Period Routes --
 router.get('/current-pay-period', verifyToken, getCurrentPayPeriod) 
+router.get('/pay-periods', verifyToken, getAllPayPeriods)
 
 export default router

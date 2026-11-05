@@ -1,6 +1,7 @@
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import EmployeeDashboard from './pages/EmployeeDashboard';
+import MyHours from './pages/MyHours';
 import {Routes, Route, Navigate } from 'react-router-dom';
 
 
@@ -24,6 +25,11 @@ function App() {
       <Route path="/admin-dashboard" element={
         <ProtectedRoute>
           <AdminDashboard />
+        </ProtectedRoute> 
+      } />
+      <Route path="/my-hours" element={
+        <ProtectedRoute>
+          <MyHours />
         </ProtectedRoute> 
       } />
     </Routes>

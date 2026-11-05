@@ -1,0 +1,49 @@
+.my-hours {
+  padding: var(--space-lg);
+  min-height: 100vh;
+}
+
+.my-hours h1 {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  text-align: center;
+  margin-bottom: var(--space-md);
+}
+
+.pay-period-select {
+  display: block;
+  width: 50%;
+  max-width: 350px;;
+  margin: 0 auto var(--space-lg);
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-primary);
+  background-color: var(--color-accent);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  box-shadow: var(--shadow-button);
+}
+
+.worklogs-section {
+  margin-top: var(--space-md);
+}
+
+.no-worklogs-card {
+    background-color: var(--color-card-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-lg);
+    margin: 0 auto var(--space-md);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+.no-worklogs-message {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-md);
+  margin-top: var(--space-xl);
+}

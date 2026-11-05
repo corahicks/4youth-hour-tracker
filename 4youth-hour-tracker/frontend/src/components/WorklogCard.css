@@ -1,0 +1,38 @@
+.worklog-card {
+    background-color: var(--color-card-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-md);
+    max-width: 500px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.worklog-card .card-date {
+    text-align: center;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-md);
+    margin-bottom: var(--space-md);
+    color: var(--color-primary);
+}
+
+.worklog-card p {
+    font-size: var(--font-size-base);
+    margin-bottom: var(--space-sm);
+    color: var(--color-text);
+}
+
+.status-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: var(--radius-full);
+    margin-right: var(--space-xs);
+    vertical-align: middle;
+}
+
+.status-dot.approved { background-color: var(--color-success); }
+.status-dot.pending  { background-color: var(--color-accent); }
+.status-dot.rejected { background-color: var(--color-danger); }
