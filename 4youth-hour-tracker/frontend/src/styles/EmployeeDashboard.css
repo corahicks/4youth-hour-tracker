@@ -96,3 +96,18 @@
   margin-top: var(--space-md);
   box-shadow: var(--shadow-button);
 }
+
+.btn-extra-hours {
+  width: 100%;
+  background-color: var(--color-action);
+  color: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  margin-top: var(--space-md);
+  box-shadow: var(--shadow-button);
+}

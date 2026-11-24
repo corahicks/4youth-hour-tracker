@@ -41,7 +41,7 @@ CREATE TABLE schedules (
 CREATE TABLE worklogs (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id),
-    schedule_id INTEGER NOT NULL REFERENCES schedules(id),
+    schedule_id INTEGER REFERENCES schedules(id),
     pay_period_id INTEGER NOT NULL REFERENCES pay_periods(id),
     institution_id INTEGER NOT NULL REFERENCES institutions(id),
     date DATE NOT NULL,

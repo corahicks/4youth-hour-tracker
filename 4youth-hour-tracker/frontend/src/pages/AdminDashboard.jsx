@@ -36,7 +36,7 @@ function AdminDashboard () {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({status: 'rejected'})
+            body: JSON.stringify({status: 'denied'})
         })
         .then(() => setWorklogs(worklogs.filter(w => w.id !== id)))
     }

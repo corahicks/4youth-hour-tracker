@@ -158,8 +158,8 @@ export const confirmAttendance = async (req, res) => {
  * @returns {500} error - database operation failed
  */
 export const submitExtraHours = async (req, res) => {
-    const { schedule_id, start_time, end_time, reasoning, institution_id, date } = req.body;
-
+    const {start_time, end_time, reasoning, institution_id, date } = req.body;
+    const normalizedStartTime = start_time.length === 5 ? `${start_time}:00` : start_time;
     const [startH, startM] = start_time.split(':').map(Number);
     const [endH, endM] = end_time.split(':').map(Number);
     const extra_hours = Math.round(((endH * 60 + endM) - (startH * 60 + startM)) / 60 * 10) / 10;
@@ -168,15 +168,24 @@ export const submitExtraHours = async (req, res) => {
         return res.status(400).json({ message: 'end_time must be after start_time' });
     }
 
-    const { data: schedule, error: scheduleError } = await supabase
-        .from('schedules')
-        .select('*')
-        .eq('id', schedule_id)
-        .single();
+    const {data: existingWorklog, error: worklogError} = await supabase
+    .from('worklogs')
+    .select('*')
+    .eq('user_id', req.user.id)
+    .eq('date', date)
+    .eq('institution_id', institution_id)
+    .eq('start_time', normalizedStartTime)
+    .limit(1);
 
-    if (scheduleError || !schedule || schedule.user_id !== req.user.id) {
-        return res.status(404).json({ message: 'Schedule not found or not owned by user' });
+
+    if (worklogError && worklogError.code !== 'PGRST116') {
+    return res.status(500).json({ message: 'Error checking existing worklog' })
     }
+    if (existingWorklog.length > 0) {
+    return res.status(400).json({ message: 'A worklog already exists for this date and location' })
+    }
+
+    
     const { data: payPeriod, error: payPeriodError } = await supabase
         .from('pay_periods')
         .select('*')
@@ -191,7 +200,7 @@ export const submitExtraHours = async (req, res) => {
         .from('worklogs')
         .insert({
             user_id: req.user.id,
-            schedule_id: schedule_id,
+            schedule_id: null, // extra hours are not tied to a specific schedule
             institution_id: institution_id,
             date: date,
             start_time: start_time,
@@ -282,6 +291,13 @@ export const getMyPayPeriodSummary = async (req, res) => {
     return res.status(200).json({ worklogs: data, totalHours });
 }
 
+/**
+ * Retrieves the current pay period based on the current date.
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {200} payPeriod - The current pay period
+ * @returns {404} error - No active pay period found`
+ */
 export const getCurrentPayPeriod = async (req, res) => {
     const today = new Date().toISOString().split('T')[0]
     const { data, error } = await supabase
@@ -295,6 +311,14 @@ export const getCurrentPayPeriod = async (req, res) => {
     return res.status(200).json({ payPeriod: data })
 }
 
+/**
+ * Retrieves all pay periods.
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {200} payPeriods - Array of all pay periods
+ * @returns {500} error - Failed to fetch from database
+ */
+
 export const getAllPayPeriods = async (req, res) => {
     const { data, error } = await supabase
         .from('pay_periods')
@@ -303,4 +327,13 @@ export const getAllPayPeriods = async (req, res) => {
 
     if (error) return res.status(500).json({ message: 'Error fetching pay periods' })
     return res.status(200).json({ payPeriods: data })
+}
+
+export const getInstitutions = async (req, res) => {
+    const { data, error } = await supabase
+        .from('institutions')
+        .select('*')
+        
+    if (error) return res.status(500).json({message: 'Error fetching institutions'})
+    return res.status(200).json({ institutions: data })
 }

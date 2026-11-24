@@ -35,4 +35,4 @@
 
 .status-dot.approved { background-color: var(--color-success); }
 .status-dot.pending  { background-color: var(--color-accent); }
-.status-dot.rejected { background-color: var(--color-danger); }
+.status-dot.denied { background-color: var(--color-danger); }

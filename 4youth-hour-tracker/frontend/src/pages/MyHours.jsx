@@ -64,7 +64,7 @@ function MyHours () {
                         date={w.date}
                         location={w.institutions?.name}
                         duration={w.extra_hours}
-                        shiftType={w.schedule_id && !w.reasoning ? 'Confirmed Shift' : 'Extra Hours'}
+                        shiftType={w.schedule_id && !w.reasoning ? 'Scheduled Shift' : 'Extra Hours'}
                         reasoning={w.reasoning}
                         status={w.status}
                     />

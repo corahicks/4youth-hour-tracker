@@ -95,6 +95,7 @@ function EmployeeDashboard () {
                 <div className="card">
                     <p><strong>Current Pay Period Approved Hours:</strong> {totalHours} hrs</p>
                     <button className="btn-worklog" onClick={() => navigate('/my-hours')}>View Worklogs</button>
+                    <button className="btn-extra-hours" onClick={() => navigate('/submit-extra-hours')}>Submit Extra Hours</button>
                 </div>
             </section>
 

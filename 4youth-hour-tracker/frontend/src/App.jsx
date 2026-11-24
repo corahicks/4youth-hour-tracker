@@ -2,6 +2,7 @@ import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import EmployeeDashboard from './pages/EmployeeDashboard';
 import MyHours from './pages/MyHours';
+import SubmitExtraHours from './pages/SubmitExtraHours';
 import {Routes, Route, Navigate } from 'react-router-dom';
 
 
@@ -32,7 +33,13 @@ function App() {
           <MyHours />
         </ProtectedRoute> 
       } />
+      <Route path="/submit-extra-hours" element={
+        <ProtectedRoute>
+          <SubmitExtraHours />
+        </ProtectedRoute> 
+      } />
     </Routes>
+    
 
   )
 }

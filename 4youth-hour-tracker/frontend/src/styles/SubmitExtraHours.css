@@ -1,0 +1,62 @@
+.submit-extra-hours {
+  padding: var(--space-lg);
+  min-height: 100vh;
+}
+
+.submit-extra-hours h1 {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.extra-hours-form {
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-lg);
+  margin: 0 auto var(--space-md);
+  max-width: 500px;
+  width: 100%;
+}
+
+.extra-hours-form label {
+ display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  margin-bottom: var(--space-md);
+}
+
+.extra-hours-form input,
+.extra-hours-form select,
+.extra-hours-form textarea {
+   width: 100%;
+  padding-top: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+}
+
+.extra-hours-form button[type="submit"] {
+   width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-base);
+  border: none;
+  border-radius: var(--radius-full);
+  margin-top: var(--space-md);
+  cursor: pointer;
+}
+
+.submit-error {
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-sm);   
+}

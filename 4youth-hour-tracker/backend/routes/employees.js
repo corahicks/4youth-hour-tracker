@@ -8,7 +8,8 @@ import {
     getMyWorklogs,
     getMyPayPeriodSummary,
     getCurrentPayPeriod,
-    getAllPayPeriods
+    getAllPayPeriods,
+    getInstitutions
 } from '../controllers/employees.js'
 
 const router = express.Router()
@@ -31,4 +32,6 @@ router.get('/pay-period-summary', verifyToken, getMyPayPeriodSummary)
 router.get('/current-pay-period', verifyToken, getCurrentPayPeriod) 
 router.get('/pay-periods', verifyToken, getAllPayPeriods)
 
+// -- Institution Routes --
+router.get('/institutions', verifyToken, getInstitutions)
 export default router
